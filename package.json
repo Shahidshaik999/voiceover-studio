@@ -1,0 +1,24 @@
+{
+  "name": "voiceover-studio",
+  "version": "2.0.0",
+  "description": "YouTube script to humanized AI voiceover — Microsoft Edge Neural TTS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@travisvn/edge-tts": "1.0.2",
+    "express": "5.1.0",
+    "google-tts-api": "^2.0.2",
+    "kokoro-js": "^1.2.1",
+    "msedge-tts": "^2.0.9",
+    "node-edge-tts": "^1.2.11"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.9"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

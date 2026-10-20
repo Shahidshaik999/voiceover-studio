@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoiceOver Studio — Microsoft Edge Neural TTS</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── Background ──────────────────────────────────────────────────── -->
+  <div class="site-bg" aria-hidden="true">
+    <div class="site-bg__image"></div>
+    <div class="site-bg__overlay"></div>
+    <div class="site-bg__noise"></div>
+  </div>
+
+  <!-- ── Navigation ──────────────────────────────────────────────────── -->
+  <header class="nav" role="banner">
+    <div class="nav__inner">
+      <div class="nav__brand">
+        <svg class="nav__logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+          <rect x="7" y="14" width="3" height="4" rx="1.5" fill="white"/>
+          <rect x="12" y="10" width="3" height="12" rx="1.5" fill="white" opacity=".85"/>
+          <rect x="17" y="8" width="3" height="16" rx="1.5" fill="white"/>
+          <rect x="22" y="12" width="3" height="8" rx="1.5" fill="white" opacity=".85"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6366f1"/>
+              <stop offset="1" stop-color="#a855f7"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="nav__brand-name">VoiceOver <span class="nav__brand-accent">Studio</span></span>
+      </div>
+      <div class="nav__status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Free &nbsp;·&nbsp; No Signup &nbsp;·&nbsp; Microsoft Edge TTS</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <section class="hero" aria-label="Page introduction">
+    <div class="hero__inner">
+      <p class="hero__label">AI Voice Generation</p>
+      <h1 class="hero__title">
+        Transform Your Script<br />
+        Into <span class="hero__title-accent">Studio Voice</span>
+      </h1>
+      <p class="hero__sub">
+        Powered by Microsoft Edge Neural TTS. Real human-sounding voices for YouTube,
+        podcasts, and content creation — completely free.
+      </p>
+      <div class="hero__pills">
+        <span class="pill">60+ Neural Voices</span>
+        <span class="pill">Instant MP3</span>
+        <span class="pill">Unlimited Usage</span>
+        <span class="pill">No Account</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── App ──────────────────────────────────────────────────────────── -->
+  <main class="workspace" id="main-content">
+
+    <!-- Step 1 — Script -->
+    <section class="panel" aria-labelledby="step1-title">
+      <div class="panel__header">
+        <div class="panel__step">01</div>
+        <div class="panel__heading">
+          <h2 class="panel__title" id="step1-title">Your Script</h2>
+          <p class="panel__desc">Paste the text you want converted to voice</p>
+        </div>
+        <span class="char-counter" aria-live="polite"><span id="charCount">0</span> / 10,000</span>
+      </div>
+      <textarea
+        id="scriptInput"
+        class="script-area"
+        placeholder="Paste your YouTube script, podcast intro, or any content here…"
+        aria-label="Script text input"
+        maxlength="10000"
+      ></textarea>
+      <div class="panel__actions">
+        <button class="action-btn" id="clearBtn" type="button">Clear</button>
+        <button class="action-btn" id="pasteBtn" type="button">Paste from Clipboard</button>
+        <button class="action-btn action-btn--accent" id="sampleBtn" type="button">Load Sample</button>
+      </div>
+    </section>
+
+    <!-- Step 2 — Voice -->
+    <section class="panel" aria-labelledby="step2-title">
+      <div class="panel__header">
+        <div class="panel__step">02</div>
+        <div class="panel__heading">
+          <h2 class="panel__title" id="step2-title">Select Voice</h2>
+          <p class="panel__desc">Andrew is selected by default — Microsoft's most natural voice</p>
+        </div>
+        <span class="voice-count-badge" id="voiceCountBadge" aria-live="polite">Loading</span>
+      </div>
+
+      <div class="filter-bar" role="group" aria-label="Voice language filter">
+        <button class="filter-btn filter-btn--active" data-filter="English" type="button">English</button>
+        <button class="filter-btn" data-filter="Indian" type="button">Indian</button>
+        <button class="filter-btn" data-filter="European" type="button">European</button>
+        <button class="filter-btn" data-filter="Asian" type="button">Asian</button>
+        <button class="filter-btn" data-filter="All" type="button">All Languages</button>
+        <input
+          class="voice-search"
+          id="voiceSearch"
+          type="search"
+          placeholder="Search voices…"
+          aria-label="Search voices"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="voice-grid" id="voiceList" role="listbox" aria-label="Voice selection">
+        <div class="voices-loading" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Loading voices…</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3 — Tune -->
+    <section class="panel" aria-labelledby="step3-title">
+      <div class="panel__header">
+        <div class="panel__step">03</div>
+        <div class="panel__heading">
+          <h2 class="panel__title" id="step3-title">Voice Settings</h2>
+          <p class="panel__desc">Adjust speed and pitch to match your content style</p>
+        </div>
+      </div>
+      <div class="settings-row">
+
+        <div class="setting-block">
+          <div class="setting-block__label">
+            <span>Speed</span>
+            <span class="setting-block__value" id="rateDisplay">Normal</span>
+          </div>
+          <input type="range" id="rateSlider" class="slider" min="-50" max="100" value="0" step="5" aria-label="Voice speed" />
+          <div class="slider-marks">
+            <span>Slow</span><span>Normal</span><span>Fast</span>
+          </div>
+        </div>
+
+        <div class="setting-block">
+          <div class="setting-block__label">
+            <span>Pitch</span>
+            <span class="setting-block__value" id="pitchDisplay">Normal</span>
+          </div>
+          <input type="range" id="pitchSlider" class="slider" min="-50" max="50" value="0" step="5" aria-label="Voice pitch" />
+          <div class="slider-marks">
+            <span>Lower</span><span>Normal</span><span>Higher</span>
+          </div>
+        </div>
+
+        <div class="setting-block">
+          <div class="setting-block__label"><span>Presets</span></div>
+          <div class="preset-row">
+            <button class="preset-btn preset-btn--active" id="speedNormal" data-slow="false" type="button">Normal</button>
+            <button class="preset-btn" id="speedSlow" data-slow="true" type="button">Slow / Clear</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Step 4 — Generate -->
+    <section class="panel panel--generate" aria-labelledby="step4-title">
+      <div class="panel__header">
+        <div class="panel__step">04</div>
+        <div class="panel__heading">
+          <h2 class="panel__title" id="step4-title">Generate</h2>
+          <p class="panel__desc">Create your voiceover in seconds</p>
+        </div>
+      </div>
+
+      <button class="generate-btn" id="generateBtn" type="button" aria-label="Generate voiceover">
+        <svg class="generate-btn__icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+        </svg>
+        <span class="generate-btn__label">Generate Voiceover</span>
+      </button>
+
+      <!-- Loading -->
+      <div class="loading-state hidden" id="loadingState" aria-live="polite" aria-label="Generating audio">
+        <div class="waveform" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p id="loadingMsg" class="loading-state__text">Generating your voiceover…</p>
+      </div>
+
+      <!-- Error -->
+      <div class="error-banner hidden" id="errorState" role="alert">
+        <svg class="error-banner__icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+        </svg>
+        <p id="errorMessage">Something went wrong.</p>
+      </div>
+    </section>
+
+    <!-- Step 5 — Result -->
+    <section class="panel panel--result hidden" id="resultCard" aria-labelledby="step5-title">
+      <div class="panel__header">
+        <div class="panel__step panel__step--done" aria-label="Completed">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" width="14" height="14">
+            <path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/>
+          </svg>
+        </div>
+        <div class="panel__heading">
+          <h2 class="panel__title" id="step5-title">Voiceover Ready</h2>
+          <p class="panel__desc">Listen, review, and download your audio file</p>
+        </div>
+      </div>
+
+      <div class="player-wrap">
+        <audio id="audioPlayer" controls aria-label="Generated voiceover audio"></audio>
+      </div>
+
+      <div class="result-meta" id="resultMeta" aria-label="Audio file details"></div>
+
+      <div class="result-actions">
+        <button class="cta-btn cta-btn--primary" id="downloadBtn" type="button">Download MP3</button>
+        <button class="cta-btn cta-btn--secondary" id="regenerateBtn" type="button">Regenerate</button>
+        <button class="cta-btn cta-btn--ghost" id="newScriptBtn" type="button">New Script</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────── -->
+  <footer class="site-footer" role="contentinfo">
+    <p>VoiceOver Studio &nbsp;&middot;&nbsp; Microsoft Edge Neural TTS &nbsp;&middot;&nbsp; Free forever &nbsp;&middot;&nbsp; No data stored</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
