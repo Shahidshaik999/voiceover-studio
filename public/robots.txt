@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://voiceover-studio-z68k.onrender.com/sitemap.xml
